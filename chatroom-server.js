@@ -4,41 +4,20 @@ var server = require("http").createServer(onRequest);
 var io = require("socket.io")(server);
 
 function onRequest(req,res){
-res.writeHead(200, {
-'Access-Control-Allow-Origin' : '*'
-});
+    res.writeHead(200, {
+        'Access-Control-Allow-Origin' : '*'
+    });
 };
-
-
-// const express    = require('express');        
+    
 const bodyParser = require('body-parser');
-// const app        = express();  
-
-// var server = require("http").createServer(app);
-// var io = require("socket.io")(server);
-// io.set('origins', '*:*');
-
 const mongoose   = require('mongoose');
 mongoose.connect('mongodb://admin:admin1@ds163650.mlab.com:63650/chat-room');
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
+
+
 const port = process.env.PORT || 8888;    
+const Users     = require('./chatroom-user-module');
+const Rooms     = require('./chatroom-room-module');
 
-//
-const Users     = require('./user-module');
-const Rooms     = require('./room-module');
-
-
-
-
-// app.get('/', (req, res) => {
-//     res.json({ message: 'welcome to our home page!' });   
-// });
 
 io.on("connection", socket => {
     console.log("connection")
@@ -55,8 +34,7 @@ io.on("connection", socket => {
                    }else{
                        // 3. create user
                        let roomname = rooms.filter(room=>room.active === true)[0].name;
-                       let newUser = {name: "guest"+(users.length+1), room: roomname}
-                       Users.create(newUser, (err, user)=>{
+                       Users.create({name: "guest"+(users.length+1), room: roomname}, (err, user)=>{
                            if(err){
                                 console.log(err)
                            }else{
@@ -71,7 +49,7 @@ io.on("connection", socket => {
                                 socket.emit(
                                     "update chat",
                                     "server",
-                                    "Users currently in this room: "+ users.map(user=>user.name).join(", ")
+                                    "Users currently in this room except you: "+ users.map(user=>user.name).join(", ")
                                 )
                                 socket.broadcast
                                 .to(roomname)
