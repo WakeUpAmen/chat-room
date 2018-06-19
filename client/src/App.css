@@ -138,11 +138,15 @@ ul {
 .chat-div{
   overflow-y: scroll;
   height: 90%;
-  width: 80%;
+  width: 70%;
   border: 1px solid grey;
   margin: 0 30px;
   text-align: left;
+  float: left;
 }
 .room-div{
   width: 10%;
+}
+.area{
+  height: 600px;
 }

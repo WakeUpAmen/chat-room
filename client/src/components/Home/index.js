@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../Actions/actions';
 import io from 'socket.io-client';
+import ScrollArea from'react-scrollbar';
 
 // const socket = io('http://localhost');
 var socket = io('http://localhost:8888');
@@ -77,13 +78,15 @@ class Home extends Component {
                     <p>current room: {this.props.currentRoom}</p>
                     {/* <p>current users: {this.props.roomUsers.map(user=>user.name).join(", ")}</p> */}
                     <p>chat record: </p>
-                    <div className="chat-div">
-                        {this.props.chatText.map(chat=>{
-                            return <p>{chat}</p>
-                        })}
-                    </div>
+                    <ScrollArea speed={0.8} className="area"   horizontal={true} vertical ={true} style={{width: "80%", float: "left"}}>
+                        <div className="chat-div">
+                            {this.props.chatText.map(chat=>{
+                                return <p>{chat}</p>
+                            })}
+                        </div>
+                    </ScrollArea>
                 </div>
-                <div style={{width: "20%", float: "right"}} className="room-div">
+                <div style={{width: "15%", float: "right"}} className="room-div">
                     <p>room list:</p>
                     {this.props.rooms.map(room=>{
                         return <p>{room.name}</p>

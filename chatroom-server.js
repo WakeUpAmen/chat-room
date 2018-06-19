@@ -49,7 +49,7 @@ io.on("connection", socket => {
                                 socket.emit(
                                     "update chat",
                                     "server",
-                                    "Users currently in this room except you: "+ users.map(user=>user.name).join(", ")
+                                    "Users currently in this room except you: "+ users.filter(user=>user.room === roomname).map(user=>user.name).join(", ")
                                 )
                                 socket.broadcast
                                 .to(roomname)
@@ -121,7 +121,7 @@ io.on("connection", socket => {
                                                     socket.emit(
                                                         "update chat",
                                                         "server",
-                                                        `Users currently in '${nextRoom}': '${users.filter(user=>user.room == nextRoom).map(user=>user.name).join(", ")}'`
+                                                        `Users currently in '${nextRoom}': '${users.map(user=>user.name).join(", ")}'`
                                                     )
                                                     socket.broadcast
                                                     .to(preRoom)
@@ -161,7 +161,7 @@ io.on("connection", socket => {
                                                     socket.emit(
                                                         "update chat",
                                                         "server",
-                                                        `Users currently in '${nextRoom}': '${users.filter(user=>user.room == nextRoom).map(user=>user.name).join(", ")}'`
+                                                        `Users currently in '${nextRoom}': '${users.map(user=>user.name).join(", ")}'`
                                                     )
                                                     socket.broadcast
                                                     .to(preRoom)
